@@ -1,30 +1,3 @@
-terraform {
-  backend "s3" {
-    bucket         = "hello-lambda-tf-state"
-    key            = "terraform.tfstate"
-    region         = "ap-northeast-1"
-    dynamodb_table = "hello-lambda-tf-lock"
-  }
-}
-
-terraform {
-  backend "s3" {
-    bucket         = "hello-lambda-tf-state"
-    key            = "terraform.tfstate"
-    region         = "ap-northeast-1"
-    dynamodb_table = "hello-lambda-tf-lock"
-  }
-}
-
-terraform {
-  backend "s3" {
-    bucket         = "hello-lambda-tf-state"
-    key            = "terraform.tfstate"
-    region         = "ap-northeast-1"
-    dynamodb_table = "hello-lambda-tf-lock"
-  }
-}
-
 provider "aws" {
   region = "ap-northeast-1"
 }
@@ -38,19 +11,21 @@ variable "lambda_name" {
 # Create IAM role for Lambda
 resource "aws_iam_role" "lambda_exec" {
   name = "${var.lambda_name}-role"
-
+  
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
       {
         Action = "sts:AssumeRole",
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        },
+        Principal = { Service = "lambda.amazonaws.com" },
         Effect = "Allow"
       }
     ]
   })
+
+  lifecycle {
+    ignore_changes = [assume_role_policy]
+  }
 }
 
 # Attach basic Lambda execution policy
