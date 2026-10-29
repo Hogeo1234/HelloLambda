@@ -24,6 +24,8 @@ resource "aws_iam_role" "lambda_exec" {
       }
     ]
   })
+
+  
 }
 
 # Attach basic Lambda execution policy
