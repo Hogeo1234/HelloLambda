@@ -9,13 +9,21 @@ variable "lambda_name" {
 }
 
 # Create IAM role for Lambda
-data "aws_iam_role" "existing_lambda" {
-  name = "${var.lambda_name}-role"
-}
-
 resource "aws_iam_role" "lambda_exec" {
-  count = data.aws_iam_role.existing_lambda.name == "" ? 1 : 0
-  # ... rest of config
+  name = "${var.lambda_name}-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Action = "sts:AssumeRole",
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        },
+        Effect = "Allow"
+      }
+    ]
+  })
 }
 
 # Attach basic Lambda execution policy
