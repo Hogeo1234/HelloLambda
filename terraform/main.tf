@@ -8,24 +8,9 @@ variable "lambda_name" {
   default     = "HelloLambda"
 }
 
-# Create IAM role for Lambda
-resource "aws_iam_role" "lambda_exec" {
+# 既存のIAMロールを読み込む（作成しない）
+data "aws_iam_role" "existing_lambda_role" {
   name = "${var.lambda_name}-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17",
-    Statement = [
-      {
-        Action = "sts:AssumeRole",
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        },
-        Effect = "Allow"
-      }
-    ]
-  })
-
-  
 }
 
 # Attach basic Lambda execution policy
@@ -44,7 +29,7 @@ variable "lambda_zip_path" {
 resource "aws_lambda_function" "hello" {
   filename         = var.lambda_zip_path
   function_name    = var.lambda_name
-  role             = aws_iam_role.lambda_exec.arn
+  role             = data.aws_iam_role.existing_lambda_role.arn
   handler          = "hello_lambda.handler"
   runtime          = "python3.12"
   source_code_hash = filebase64sha256(var.lambda_zip_path)
