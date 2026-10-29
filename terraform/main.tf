@@ -35,7 +35,7 @@ resource "aws_iam_role_policy_attachment" "lambda_basic" {
 variable "lambda_zip_path" {
   description = "Path to the Lambda deployment zip file"
   type        = string
-  default     = "../project/hello_lambda.zip"
+  default     = "../project/src/hello_lambda.zip"
 }
 
 # Create Lambda function from zip created in CI/CD
