@@ -1,3 +1,30 @@
+terraform {
+  backend "s3" {
+    bucket         = "hello-lambda-tf-state"
+    key            = "terraform.tfstate"
+    region         = "ap-northeast-1"
+    dynamodb_table = "hello-lambda-tf-lock"
+  }
+}
+
+terraform {
+  backend "s3" {
+    bucket         = "hello-lambda-tf-state"
+    key            = "terraform.tfstate"
+    region         = "ap-northeast-1"
+    dynamodb_table = "hello-lambda-tf-lock"
+  }
+}
+
+terraform {
+  backend "s3" {
+    bucket         = "hello-lambda-tf-state"
+    key            = "terraform.tfstate"
+    region         = "ap-northeast-1"
+    dynamodb_table = "hello-lambda-tf-lock"
+  }
+}
+
 provider "aws" {
   region = "ap-northeast-1"
 }
