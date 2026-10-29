@@ -23,6 +23,8 @@ jobs:
 
       - name: Run tests
         working-directory: project
+        env:
+          PYTHONPATH: "."
         run: pytest test/ -v
 
   deploy:
